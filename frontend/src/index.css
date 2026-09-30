@@ -17,6 +17,8 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -32,6 +34,7 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  width: 100%;
 }
 
 h1, h2, h3, h4 {
@@ -39,6 +42,7 @@ h1, h2, h3, h4 {
   margin: 0;
   font-weight: 600;
   letter-spacing: -0.01em;
+  line-height: 1.15;
 }
 
 p { margin: 0; }
@@ -61,6 +65,7 @@ img { max-width: 100%; display: block; }
 }
 
 .container {
+  width: 100%;
   max-width: var(--max-w);
   margin: 0 auto;
   padding: 0 28px;
@@ -170,69 +175,41 @@ img { max-width: 100%; display: block; }
   color: var(--cyan);
 }
 
-@media (max-width: 640px) {
-  .section { padding: 80px 0; }
-}
-
-/* ---- Responsive grid layouts ---- */
-
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  align-items: center;
-  gap: 40px;
-  width: 100%;
-}
-
-.hero-actions {
-  display: flex;
-  gap: 16px;
-  margin-top: 36px;
-  flex-wrap: wrap;
-}
-
-.hero-robot {
-  display: flex;
-  justify-content: center;
-}
-
-.about-grid,
-.contact-grid {
-  display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  gap: 48px;
-}
-
-@media (max-width: 860px) {
-  .hero-grid {
-    grid-template-columns: 1fr;
-    text-align: center;
-    gap: 12px;
-  }
-  .hero-actions { justify-content: center; }
-  .hero-robot { order: -1; }
-  .hero-robot svg { width: 200px; height: auto; }
-}
-
-@media (max-width: 760px) {
-  .about-grid,
-  .contact-grid {
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
-}
-
-@media (max-width: 640px) {
-  .container { padding: 0 20px; }
-  h1 { word-break: break-word; }
-}
-
 /* ---- Navbar ---- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid var(--line);
+  transition: background 0.3s ease;
+}
+
+.nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+
+.nav-logo {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  white-space: nowrap;
+}
 
 .nav-links {
   display: flex;
   gap: 32px;
 }
+
+.nav-link {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  transition: color 0.2s ease;
+}
+.nav-link:hover { color: var(--text); }
 
 .nav-toggle {
   display: none;
@@ -275,4 +252,234 @@ img { max-width: 100%; display: block; }
     font-size: 0.95rem;
   }
   .nav-mobile-panel a:last-child { border-bottom: none; }
+}
+
+/* ---- Responsive grid layouts ---- */
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  align-items: center;
+  gap: 40px;
+  width: 100%;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 36px;
+  flex-wrap: wrap;
+}
+
+.hero-robot {
+  display: flex;
+  justify-content: center;
+}
+
+.about-grid,
+.contact-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 48px;
+}
+
+/* Grid children can overflow their column without this */
+.hero-grid > *,
+.about-grid > *,
+.contact-grid > * {
+  min-width: 0;
+}
+
+@media (max-width: 860px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 12px;
+  }
+  .hero-actions { justify-content: center; }
+  .hero-robot { order: -1; }
+  .hero-robot svg { width: 200px; height: auto; }
+}
+
+@media (max-width: 760px) {
+  .about-grid,
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}
+
+@media (max-width: 640px) {
+  .container { padding: 0 20px; }
+  .section { padding: 80px 0; }
+
+  h1 {
+    word-break: break-word;
+    font-size: clamp(1.7rem, 7vw, 2.2rem);
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .hero-actions .btn { justify-content: center; }
+
+  /* Scroll indicator has inline styles, so !important is needed */
+  a[aria-label="Scroll to About section"] { display: none !important; }
+}
+
+/* ---- About section ---- */
+
+.about-text {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  color: var(--text-muted);
+  max-width: 100%;
+}
+.about-text p {
+  font-size: 1.02rem;
+  line-height: 1.7;
+  overflow-wrap: break-word;
+}
+
+.trait-list {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+}
+.trait-list li {
+  position: relative;
+  padding-left: 16px;
+  font-size: 0.92rem;
+  white-space: nowrap;
+}
+.trait-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--cyan);
+  transform: translateY(-50%);
+}
+
+/* ---- Skills section ---- */
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+.skill-card {
+  background: var(--bg-raised);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 24px;
+  min-width: 0;
+  cursor: default;
+  transition: opacity 0.7s ease, transform 0.25s ease, border-color 0.25s ease;
+}
+.skill-card.is-visible:hover {
+  transform: translateY(-4px);
+  border-color: var(--violet);
+}
+.skill-name {
+  font-size: 1.05rem;
+  margin-bottom: 6px;
+}
+.skill-note {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  overflow-wrap: break-word;
+}
+
+@media (max-width: 980px) {
+  .skills-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 640px) {
+  .skills-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+  .skill-card { padding: 18px 20px; }
+
+  .section-heading {
+    font-size: clamp(1.5rem, 6.2vw, 1.9rem);
+    max-width: 100%;
+    margin-bottom: 32px;
+  }
+
+  .about-text p { font-size: 0.98rem; }
+  .trait-list { gap: 10px 22px; }
+}
+
+/* ---- Currently learning ---- */
+
+.learning { margin-top: 56px; }
+.learning-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+.learning-list { display: flex; gap: 12px; flex-wrap: wrap; }
+.learning-chip {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1px dashed var(--line);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.learning-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gradient);
+}
+
+/* ---- Root-cause fix: nothing may be wider than the screen ---- */
+
+html, body { max-width: 100%; }
+
+/* The hero holds absolutely positioned glow circles wider than a phone screen */
+#top {
+  position: relative;
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .skills-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---- About: heading spacing + safe single-column on mobile ---- */
+
+.about-heading { margin-bottom: 0; }
+
+@media (max-width: 760px) {
+  .about-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---- Mobile spacing: hero -> about transition ---- */
+
+@media (max-width: 640px) {
+  /* Equal breathing room above and below the divider line */
+  #top { padding-bottom: 64px !important; }
+  .section { padding: 64px 0; }
+
+  /* Tighter gap between the About heading and its paragraph */
+  .about-grid { gap: 16px; }
+  .section-heading { margin-bottom: 28px; }
+  .about-heading { margin-bottom: 0; }
 }
